@@ -15,46 +15,24 @@ import UIKit
 //    2¢, 2¢
 
 
-func changePossibities(amount: Int, denomination: [Int]) -> Int {
-    
-    var combos = [[Int]]()
-    
-    for i in 0..<denomination.count / 2 + 1 {
-        let temp = amount - denomination[i]
-        if temp > 0 {
-            //print(denomination[i], temp)
-            combos.append([denomination[i], temp])
-        }
-    }
 
-    for i in 0..<denomination.count / 2 {
-        for j in i + 1..<denomination.count {
-            let temp = amount - denomination[i] - denomination[j]
-            if temp > 0 {
-                //print(denomination[i], denomination[j], temp)
-                combos.append([denomination[i],denomination[j], temp])
-            }
+func changePossibities(amount: Int, denomination: [Int]) -> Int {
+    var lengthOfArr = denomination.count
+    var table: Array<Int> = Array(repeating: 0, count: amount + 1)
+    
+    //    base case
+    table[0] = 1
+    
+    
+    for i in 0..<lengthOfArr {
+        for j in denomination[i]...amount {
+            table[j] += table[j - denomination[i]]
+            print(table)
         }
+        print("**")
     }
-    
-    
-    for i in 0..<denomination.count   {
-        for j in i..<denomination.count   {
-            for k in j..<denomination.count  {
-                let temp = amount - denomination[i] - denomination[j] - denomination[k]
-                if temp > 0 {
-                    //print(denomination[i],denomination[j],denomination[k], temp)
-                    
-                    combos.append([denomination[i],denomination[j],denomination[k], temp])
-                }
-            }
-        }
-        
-    }
-//    combos.forEach{print($0.reduce(0,+),"=",$0)}
-    
-    return combos.count
+    print(table)
+    return table[amount]
 }
 
-changePossibities(amount: 4, denomination: [1,2,3])
-
+changePossibities(amount: 6, denomination: [1,2,3])
